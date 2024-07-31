@@ -138,6 +138,10 @@
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
+    height: 800px;
+  }
+  .playList {
+    overflow-y: auto;
   }
   
   .contentTitle {
@@ -327,6 +331,6 @@
     padding: 34px;
     gap: 10px;
   }
-  .author:active{
+  .author:active {
     display: block;
   }

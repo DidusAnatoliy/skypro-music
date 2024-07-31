@@ -5,6 +5,7 @@ import styles from "./Bar.module.css";
 import classNames from "classnames";
 import { TrackType } from "@/lib/type";
 import PlayerProgress from "../PlayerProgress/PlayerProgress";
+import { TimeBarCurrent, TimeBarDuration } from "@/lib/helper";
 
 type PlaylistTrack = {
   track: TrackType;
@@ -16,6 +17,7 @@ const Bar = ({ track }: PlaylistTrack) => {
 
   // Состояние для зацикливания трека
   const [loop, setLoop] = useState<boolean>(false);
+  
   const toggleLoop = () => {
     const audio = audioRef.current;
     if (audio) {
@@ -45,17 +47,8 @@ const Bar = ({ track }: PlaylistTrack) => {
     audioRef.current?.play();
     setIsPlaying(true);
   };
-  const currentMinutes = Math.floor(currentTime / 60);
-  const currentSeconds = Math.floor(currentTime % 60);
-  const durationMinutes = Math.floor(duration / 60);
-  const durationSeconds = Math.floor(duration % 60);
-  const currentTimes = `${currentMinutes}: ${
-    currentSeconds < 10 ? "0" + currentSeconds : currentSeconds
-  }`;
-  const durationTimes = `${durationMinutes}: ${
-    durationSeconds < 10 ? "0" + durationSeconds : durationSeconds
-  }`;
-
+  
+  
   useEffect(() => {
     const audio = audioRef.current;
     const setTime = () => {
@@ -81,7 +74,8 @@ const Bar = ({ track }: PlaylistTrack) => {
     <div className={styles.bar}>
       <div className={styles.barContent}>
         <div className={styles.currentTime}>
-          <span>{currentTimes}</span>/<span>{durationTimes}</span>
+        <span>{TimeBarCurrent(currentTime)}</span>/
+        <span>{TimeBarDuration(duration)}</span>
         </div>
         <PlayerProgress
           max={duration}
@@ -104,10 +98,13 @@ const Bar = ({ track }: PlaylistTrack) => {
                   ></use>
                 </svg>
               </div>
-              <div className={classNames(styles.playerBtnPlay, styles._btn)}>
+              <div
+                onClick={togglePlay}
+                className={classNames(styles.playerBtnPlay, styles._btn)}
+              >
                 <svg className={styles.playerBtnPlaySvg}>
                   <use
-                    onClick={togglePlay}
+
                     xlinkHref={`icon/sprite.svg#${
                       isPlaying ? "icon-pause" : "icon-play"
                     }`}
@@ -123,11 +120,16 @@ const Bar = ({ track }: PlaylistTrack) => {
                 </svg>
               </div>
               <div
-                className={classNames(styles.playerBtnRepeat, styles.btnIcon)}
+                onClick={toggleLoop}
+                className={classNames(
+                  styles.playerBtnRepeat,
+                  styles.btnIcon,
+                  loop ? styles.active : null
+                )}
               >
                 <svg className={styles.playerBtnRepeatSvg}>
                   <use
-                    onClick={toggleLoop}
+                    
                     xlinkHref={`icon/sprite.svg#${
                       loop ? "icon-repeat-active" : "icon-repeat"
                     }`}
@@ -135,13 +137,11 @@ const Bar = ({ track }: PlaylistTrack) => {
                 </svg>
               </div>
               <div
+                onClick={handleTreck}
                 className={classNames(styles.playerBtnShuffle, styles.btnIcon)}
               >
                 <svg className={styles.playerBtnShuffleSvg}>
-                  <use
-                    onClick={handleTreck}
-                    xlinkHref="icon/sprite.svg#icon-shuffle"
-                  ></use>
+                <use xlinkHref="icon/sprite.svg#icon-shuffle"></use>
                 </svg>
               </div>
             </div>
