@@ -17,11 +17,11 @@ const Bar = ({ track }: PlaylistTrack) => {
 
   // Состояние для зацикливания трека
   const [loop, setLoop] = useState<boolean>(false);
-  
+
   const toggleLoop = () => {
     const audio = audioRef.current;
     if (audio) {
-      audio.loop = loop;
+      audio.loop = !loop;
       setLoop((prev) => !prev);
     }
   };
@@ -47,8 +47,8 @@ const Bar = ({ track }: PlaylistTrack) => {
     audioRef.current?.play();
     setIsPlaying(true);
   };
-  
-  
+
+
   useEffect(() => {
     const audio = audioRef.current;
     const setTime = () => {
@@ -74,8 +74,8 @@ const Bar = ({ track }: PlaylistTrack) => {
     <div className={styles.bar}>
       <div className={styles.barContent}>
         <div className={styles.currentTime}>
-        <span>{TimeBarCurrent(currentTime)}</span>/
-        <span>{TimeBarDuration(duration)}</span>
+          <span>{TimeBarCurrent(currentTime)}</span>/
+          <span>{TimeBarDuration(duration)}</span>
         </div>
         <PlayerProgress
           max={duration}
@@ -104,10 +104,8 @@ const Bar = ({ track }: PlaylistTrack) => {
               >
                 <svg className={styles.playerBtnPlaySvg}>
                   <use
-
-                    xlinkHref={`icon/sprite.svg#${
-                      isPlaying ? "icon-pause" : "icon-play"
-                    }`}
+                    xlinkHref={`icon/sprite.svg#${isPlaying ? "icon-pause" : "icon-play"
+                      }`}
                   ></use>
                 </svg>
               </div>
@@ -129,10 +127,8 @@ const Bar = ({ track }: PlaylistTrack) => {
               >
                 <svg className={styles.playerBtnRepeatSvg}>
                   <use
-                    
-                    xlinkHref={`icon/sprite.svg#${
-                      loop ? "icon-repeat-active" : "icon-repeat"
-                    }`}
+                    xlinkHref={`icon/sprite.svg#${loop ? "icon-repeat-active" : "icon-repeat"
+                      }`}
                   ></use>
                 </svg>
               </div>
@@ -141,7 +137,7 @@ const Bar = ({ track }: PlaylistTrack) => {
                 className={classNames(styles.playerBtnShuffle, styles.btnIcon)}
               >
                 <svg className={styles.playerBtnShuffleSvg}>
-                <use xlinkHref="icon/sprite.svg#icon-shuffle"></use>
+                  <use xlinkHref="icon/sprite.svg#icon-shuffle"></use>
                 </svg>
               </div>
             </div>
