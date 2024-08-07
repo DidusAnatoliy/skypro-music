@@ -1,5 +1,7 @@
+"use client";
+
+import styles from "./CenterBlock.module.css";
 import React, { useEffect, useState } from "react";
-import styles from "./Main.module.css";
 import classNames from "classnames";
 import Tracks from "../Tracks/Tracks";
 import { tracksApi } from "../../Api/tracksApi";
@@ -9,18 +11,18 @@ import { FilterData } from "@components/Filter/FilterData";
 
 
 
-type PlayTrack = {
-  setTrack: (param: TrackType) => void;
-};
 
-const Main = ({ setTrack }: PlayTrack) => {
+const CenterBlock = () => {
   const [allTracks, setAllTracks] = useState<TrackType[]>([]);
-  // const tracks: TrackType[] = await tracksApi();
-  console.log(allTracks);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     tracksApi()
-      .then((response) => setAllTracks(response))
-      .catch((err) => console.log(err.message));
+    .then((response: TrackType[]) => setAllTracks(response))
+    .catch((err) => {
+      console.log(err.message);
+      setError("ошибка загрузки треков");
+    });
   }, []);
   //получаем уникальных авторов без повторений
   const uniqueAuthors = Array.from(
@@ -31,6 +33,7 @@ const Main = ({ setTrack }: PlayTrack) => {
   const uniqueGenre = Array.from(
     new Set(allTracks.map((track) => track.genre))
   );
+
   FilterData[2].list = uniqueGenre;
 
   return (
@@ -64,17 +67,14 @@ const Main = ({ setTrack }: PlayTrack) => {
             </svg>
           </div>
         </div>
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <div className={styles.playList}>
-          {allTracks.map((tracks: TrackType) => (
-            <Tracks
-              key={tracks.id}
-              tracks={tracks}
-              onClick={() => setTrack(tracks)}
-            />
+          {allTracks.map((value) => (
+            <Tracks key={value.id} track={value} allTracks={allTracks} />
           ))}
         </div>
       </div>
     </div>
   );
 };
-export default Main;
+export default CenterBlock;

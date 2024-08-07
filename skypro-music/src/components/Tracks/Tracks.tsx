@@ -1,43 +1,59 @@
-
+"use client";
+import classNames from "classnames";
+import { formatDate } from "@/lib/helper";
 import { TrackType } from "@/lib/type";
 import styles from "./Tracks.module.css";
+import { setCurrentTrack } from "../../store/features/playListSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/store";
+
 type Props = {
-  tracks: TrackType;
-  onClick: () => void;
+  allTracks: TrackType[];
+  track: TrackType;
 };
-function Tracks({ tracks, onClick }: Props) {
-  function formatDate(second: number) {
-    const minutes = Math.floor(second / 60);
-    const remainingSeconds = second & 60;
-    const formattedMinutes = String(minutes).padStart(2, "0");
-    const formattedSeconds = String(remainingSeconds).padStart(2, "0");
-    return `${formattedMinutes}:${formattedSeconds}`;
-  }
+const Tracks = ({ allTracks, track }: Props) => {
+  const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
+  const dispatch = useAppDispatch();
+
+  const handleClick = () => {
+    dispatch(setCurrentTrack({ currentTrack: track, currentPlaylist: allTracks }));
+  };
+  const { name, author, album, duration_in_seconds } = track;
+  const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
+  const isCurrentTrack = currentTrack?.id === track.id;
   return (
-    <div onClick={onClick} className={styles.contentPlaylist}>
+    <div onClick={handleClick} className={styles.contentPlaylist}>
       <div className={styles.playlistItem}>
         <div className={styles.playlistTrack}>
           <div className={styles.trackTitle}>
             <div className={styles.trackTitleImage}>
-              <svg className={styles.trackTitleSvg}>
-                <use xlinkHref="icon/sprite.svg#icon-note"></use>
+            <svg
+                className={classNames(styles.trackTitleSvg, {
+                  [styles.playingDotActive]: isCurrentTrack,
+                  [styles.playingDot]: isCurrentTrack && isPlaying,
+                })}
+              >
+                <use
+                  xlinkHref={`icon/sprite.svg#${
+                    isCurrentTrack ? "icon-isplaying" : "icon-note"
+                  }`}
+                ></use>
               </svg>
             </div>
             <div>
               <a className={styles.trackTitleLink} href="http://">
-                {tracks.name}
+                {name}
                 <span className={styles.trackTitleSpan}></span>
               </a>
             </div>
           </div>
           <div className={styles.trackAuthor}>
             <a className={styles.trackAuthorLink} href="http://">
-              {tracks.author}
+              {author}
             </a>
           </div>
           <div className={styles.trackAlbum}>
             <a className={styles.trackAlbumLink} href="http://">
-              {tracks.album}
+              {album}
             </a>
           </div>
           <div>
@@ -47,7 +63,7 @@ function Tracks({ tracks, onClick }: Props) {
           </div>
           <div>
             <span className={styles.trackTimeText}>
-              {formatDate(tracks.duration_in_seconds)}
+              {formatDate(duration_in_seconds)}
             </span>
           </div>
         </div>
