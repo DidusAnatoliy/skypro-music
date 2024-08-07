@@ -1,24 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Main.module.css";
 import classNames from "classnames";
 import Tracks from "../Tracks/Tracks";
 import { tracksApi } from "../../Api/tracksApi";
-import { TrackType } from "@/lib/data";
+import { TrackType } from "@/lib/type";
 import Sorting from "../Sorting/Sorting";
 import { FilterData } from "@components/Filter/FilterData";
 
 
 
-const Main = async () => {
-  const tracks: TrackType[] = await tracksApi();
-  console.log(tracks)
+type PlayTrack = {
+  setTrack: (param: TrackType) => void;
+};
+
+const Main = ({ setTrack }: PlayTrack) => {
+  const [allTracks, setAllTracks] = useState<TrackType[]>([]);
+  // const tracks: TrackType[] = await tracksApi();
+  console.log(allTracks);
+  useEffect(() => {
+    tracksApi()
+      .then((response) => setAllTracks(response))
+      .catch((err) => console.log(err.message));
+  }, []);
   //получаем уникальных авторов без повторений
   const uniqueAuthors = Array.from(
-    new Set(tracks.map((track) => track.author))
+    new Set(allTracks.map((track) => track.author))
   );
   FilterData[0].list = uniqueAuthors;
   //получаем уникальные жанры без повторений
-  const uniqueGenre = Array.from(new Set(tracks.map((track) => track.genre)));
+  const uniqueGenre = Array.from(
+    new Set(allTracks.map((track) => track.genre))
+  );
   FilterData[2].list = uniqueGenre;
 
   return (
@@ -52,9 +64,15 @@ const Main = async () => {
             </svg>
           </div>
         </div>
-        {tracks.map((tracks: TrackType) => (
-          <Tracks key={tracks.id} tracks={tracks} />
-        ))}
+        <div className={styles.playList}>
+          {allTracks.map((tracks: TrackType) => (
+            <Tracks
+              key={tracks.id}
+              tracks={tracks}
+              onClick={() => setTrack(tracks)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
