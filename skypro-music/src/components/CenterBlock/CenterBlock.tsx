@@ -8,7 +8,7 @@ import { tracksApi } from "../../Api/tracksApi";
 import { TrackType } from "@/lib/type";
 import Sorting from "../Sorting/Sorting";
 import { FilterData } from "@components/Filter/FilterData";
-import Search from "../../Search/Search";
+import Search from "../Search/Search";
 import { useAppDispatch, useAppSelector } from "../../hooks/store";
 import { setInitialPlaylist } from "../../store/features/playListSlice";
 
