@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState, useMemo,ChangeEvent} from "react";
 import styles from "./Bar.module.css";
 import classNames from "classnames";
 import PlayerProgress from "../PlayerProgress/PlayerProgress";
@@ -93,6 +93,15 @@ import { useAppDispatch, useAppSelector } from "../../hooks/store";
     dispatch(prevTrack());
   };
 
+  const handlePlayerProgress = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (audioRef.current) {
+        audioRef.current.currentTime = Number(e.target.value);
+      }
+    },
+    []
+  );
+
   useEffect(() => {
     const audio = audioRef.current;
 
@@ -117,11 +126,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/store";
           max={duration}
           value={currentTime}
           step={0.01}
-          onChange={(e) => {
-            if (audioRef.current) {
-              audioRef.current.currentTime = Number(e.target.value);
-            }
-          }}
+          onChange={handlePlayerProgress}
         />
         <div className={styles.barPlayerBlock}>
           <div className={styles.barPlayer}>
