@@ -17,19 +17,14 @@ import { setInitialPlaylist } from "../../store/features/playListSlice";
 const CenterBlock = () => {
   const [allTracks, setAllTracks] = useState<TrackType[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const dispatch = useAppDispatch();
-  const filterTracks = useAppSelector(
-    (state) => state.playlist.filteredPlaylist
-  );
+  const filterTracks = useAppSelector((state) => state.playlist.filteredPlaylist);
 
   useEffect(() => {
     tracksApi()
     .then((response: TrackType[]) => {
         setAllTracks(response);
-        dispatch(setInitialPlaylist(response));
-        setIsLoading(true);
+        dispatch(setInitialPlaylist(response ));
       })
     .catch((err) => {
       console.log(err.message);
@@ -70,14 +65,11 @@ const CenterBlock = () => {
           </div>
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        {filterTracks.length === 0 && isLoading && "Ничего не найдено"}
-        {isLoading && (
-          <div className={styles.playList}>
-            {filterTracks.map((value) => (
-              <Tracks key={value.id} track={value} allTracks={allTracks} />
-            ))}
-          </div>
-        )}
+        <div className={styles.playList}>
+          {filterTracks.map((value) => (
+            <Tracks key={value.id} track={value} allTracks={allTracks} />
+          ))}
+        </div>
       </div>
     </div>
   );

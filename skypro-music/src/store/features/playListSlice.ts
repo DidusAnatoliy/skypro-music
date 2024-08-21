@@ -1,8 +1,15 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { TrackType } from "../../lib/type";
+import { fetchFavoriteTracks } from "@/Api/favoriteTracks";
 
-
-type PlayListStateType = {
+export const getFavoriteTracks = createAsyncThunk(
+  "playlistFavoriteTracks",
+  async (access: string) => {
+    const favoriteTracks = await fetchFavoriteTracks(access);
+    return favoriteTracks;
+  }
+);
+export type PlayListStateType = {
   currentPlaylist: TrackType[];
   currentTrack: TrackType | null;
   isPlaying: boolean;
@@ -17,6 +24,7 @@ type PlayListStateType = {
   };
   filteredPlaylist: TrackType[]; //Массив отфильтрованных треков.
   initialPlaylist: TrackType[]; //Массив исходных треков, до применения фильтрации.
+  likedTracks: TrackType[];
 };
 const initialState: PlayListStateType = {
   currentPlaylist: [],
@@ -33,12 +41,18 @@ const initialState: PlayListStateType = {
   },
   filteredPlaylist: [],
   initialPlaylist: [],
+  likedTracks: [],
 };
-
 const playListSlice = createSlice({
   name: "playlist",
   initialState,
   reducers: {
+    setLikeTrack: (state, action: PayloadAction<TrackType>) => {
+      state.likedTracks.push(action.payload);
+    },
+    setDislikeTrack: (state, action: PayloadAction<number>) => {
+      state.likedTracks = state.likedTracks.filter((track) => track.id !== action.payload);
+    },
     setInitialPlaylist: (state, action: PayloadAction<TrackType[]>) => {
       state.filteredPlaylist = action.payload;
       state.initialPlaylist = action.payload;
@@ -77,7 +91,7 @@ const playListSlice = createSlice({
       const currentIndex = playlist.findIndex(
         (track) => track.id === state.currentTrack?.id
       );
-      
+      // не исчезает бар, если трек последний, ничего не происходит
       const prevIndex = playlist[currentIndex - 1];
       if (prevIndex) {
         state.currentTrack = prevIndex;
@@ -139,7 +153,6 @@ const playListSlice = createSlice({
               new Date(b.release_date).getTime()
           );
           break;
-
         default:
           filterTracks;
           break;
@@ -155,6 +168,22 @@ const playListSlice = createSlice({
       };
       state.filteredPlaylist = state.initialPlaylist;
     },
+    likeTrack: (state, action: PayloadAction<TrackType>) => {
+      state.likedTracks.push(action.payload);
+    },
+    deleteTrack: (state, action: PayloadAction<TrackType>) => {
+      state.likedTracks = state.likedTracks.filter(
+        (el) => el.id !== action.payload.id
+      );
+    },
+  },
+  extraReducers(builder) {
+    builder.addCase(
+      getFavoriteTracks.fulfilled,
+      (state, action: PayloadAction<TrackType[]>) => {
+        state.likedTracks = action.payload;
+      }
+    );
   },
 });
 export const {
@@ -167,6 +196,8 @@ export const {
   setFilters,
   setInitialPlaylist,
   resetFilters,
+  setLikeTrack,
+  setDislikeTrack,
 } = playListSlice.actions;
 
 export const playlistReducer = playListSlice.reducer;
