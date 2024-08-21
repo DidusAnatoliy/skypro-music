@@ -9,12 +9,13 @@ import { useLikeTrack } from "../../hooks/useLikes";
 import { useInitializeLikedTracks } from "../../hooks/likes";
 
 type Props = {
-  allTracks: TrackType[];
+
   track: TrackType;
 };
-const Tracks = ({ allTracks, track }: Props) => {
+const Tracks = ({ track }: Props) => {
   const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
   const dispatch = useAppDispatch();
+  const allTracks = useAppSelector((state) => state.playlist.filteredPlaylist);
 
   const handleClick = () => {
     dispatch(
@@ -26,7 +27,6 @@ const Tracks = ({ allTracks, track }: Props) => {
   const isCurrentTrack = currentTrack?.id === track.id;
   const { isLiked, handleLike } = useLikeTrack(track);
 
-  useInitializeLikedTracks();
   return (
     <div onClick={handleClick} className={styles.contentPlaylist}>
       <div className={styles.playlistItem}>

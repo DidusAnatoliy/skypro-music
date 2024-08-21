@@ -14,10 +14,18 @@ const Header = () => {
   function onClickBurger() {
     setOpenBurger((prev) => !prev);
   }
-  const isAuth = useAppSelector((state) => state.user.isAuth);
+  const tokens = useAppSelector((state) => state.user.tokens);
+  const isAuth = useAppSelector((state) => state.user.user?.username);
   const handleLogout = () => {
     dispatch(logout());
     router.push("/signin");
+  };
+  const isAuthTracks = () => {
+    if (tokens.access) {
+      router.push("/tracks/favorite");
+    } else {
+      alert("авторизуйтесь");
+    }
   };
   return (
     <nav className={styles.mainNavNav}>
@@ -45,15 +53,11 @@ const Header = () => {
                 Главное
               </Link>
             </li>
-            <li className={styles.menuItem}>
-              <Link href="/" className={styles.menuLink}>
-                Мой плейлист
-              </Link>
+            <li onClick={isAuthTracks} className={styles.menuItem}>
+              Мой плейлист
             </li>
             <li onClick={handleLogout} className={styles.menuItem}>
-              <Link href="/signin" className={styles.menuLink}>
-              {isAuth ? "Выйти" : "Войти"}
-              </Link>
+            {isAuth ? "Выйти" : "Войти"}
             </li>
           </ul>
         </div>

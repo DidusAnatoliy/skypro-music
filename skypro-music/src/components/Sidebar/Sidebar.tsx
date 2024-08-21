@@ -16,9 +16,10 @@ const Sidebar = () => {
               <Image
                 className={styles.sidebarImg}
                 src="/images/playlist01.png"
-                alt="day's playlist"
+                alt="Плейлист дня"
                 width={256}
                 height={75}
+                priority
               />
             </a>
           </div>

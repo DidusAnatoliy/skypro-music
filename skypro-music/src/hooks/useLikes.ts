@@ -22,7 +22,7 @@ export const useLikeTrack = (track: TrackType) => {
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     e.stopPropagation();
-
+    if (!tokens) alert("чтобы поставить лайк, авторизуйтесь");
     try {
       if (isLiked) {
         if (tokens) {
