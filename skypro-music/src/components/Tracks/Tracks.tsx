@@ -41,7 +41,7 @@ const Tracks = ({ track }: Props) => {
                 })}
               >
                 <use
-                  xlinkHref={`icon/sprite.svg#${
+                  xlinkHref={`/icon/sprite.svg#${
                     isCurrentTrack ? "icon-isplaying" : "icon-note"
                   }`}
                 ></use>
@@ -70,7 +70,7 @@ const Tracks = ({ track }: Props) => {
                 [styles.activeLike]: isLiked,
               })}
             >
-              <use xlinkHref="icon/sprite.svg#icon-like"></use>
+              <use xlinkHref="/icon/sprite.svg#icon-like"></use>
             </svg>
           </div>
           <div>

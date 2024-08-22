@@ -2,6 +2,8 @@ import React from "react";
 import Image from "next/image";
 import styles from "./Sidebar.module.css";
 import User from "../User/User";
+import Link from "next/link";
+
 
 
 const Sidebar = () => {
@@ -12,7 +14,7 @@ const Sidebar = () => {
       <div className={styles.sidebarBlock}>
         <div className={styles.sidebarList}>
           <div className={styles.sidebarItem}>
-            <a className={styles.sidebarLink} href="#">
+            <Link className={styles.sidebarLink} href="/tracks/category/1">
               <Image
                 className={styles.sidebarImg}
                 src="/images/playlist01.png"
@@ -21,10 +23,10 @@ const Sidebar = () => {
                 height={75}
                 priority
               />
-            </a>
+            </Link>
           </div>
           <div className={styles.sidebarItem}>
-            <a className={styles.sidebarLink} href="#">
+            <Link className={styles.sidebarLink} href="/tracks/category/2">
               <Image
                 className={styles.sidebarImg}
                 src="/images/playlist02.png"
@@ -32,10 +34,10 @@ const Sidebar = () => {
                 width={256}
                 height={75}
               />
-            </a>
+            </Link>
           </div>
           <div className={styles.sidebarItem}>
-            <a className={styles.sidebarLink} href="#">
+            <Link className={styles.sidebarLink} href="/tracks/category/3">
               <Image
                 className={styles.sidebarImg}
                 src="/images/playlist03.png"
@@ -43,7 +45,7 @@ const Sidebar = () => {
                 width={256}
                 height={75}
               />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

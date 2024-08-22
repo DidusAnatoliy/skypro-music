@@ -5,9 +5,9 @@ import Filter from "@components/Filter/Filter";
 import { FilterData, order } from "@components/Filter/FilterData";
 
 import { useAppSelector } from "../../hooks/store";
+type props = {title:string}
 
-
-const Sorting = () => {
+const Sorting = ({title}:props) => {
   const [filterValue, setFilterValue] = useState<string | null>(null);
 
   const authorList = useAppSelector(
@@ -33,7 +33,7 @@ const Sorting = () => {
   
   return (
     <div>
-      <h2 className={styles.centerblockH2}>Треки</h2>
+      <h2 className={styles.centerblockH2}>{title}</h2>
       <div className={styles.centerblockFilter}>
         <div className={styles.filterTitle}>Искать по:</div>
         {FilterData.map((item, index) => {

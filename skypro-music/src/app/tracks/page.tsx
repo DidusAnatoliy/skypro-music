@@ -1,6 +1,6 @@
+'use client'
 import CenterBlock from "@components/CenterBlock/CenterBlock";
 import styles from "./layout.module.css";
-
 import { useEffect} from "react";
 import { tracksApi } from "../../Api/tracksApi";
 import { TrackType } from "../../lib/type";
@@ -26,8 +26,7 @@ const MainTracksPage = () => {
   return (
     <>
       <div>
-        <h2 className={styles.centerblockH2}>Треки</h2>
-        <Sorting/>
+        <Sorting title={"Треки"}/>
         <CenterBlock allTracks={allTracks} />
       </div>
     </>

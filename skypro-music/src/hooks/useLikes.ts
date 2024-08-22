@@ -39,7 +39,9 @@ export const useLikeTrack = (track: TrackType | null) => {
           await likesFavoriteTracks(tokens, track.id);
           dispatch(setLikeTrack(track));
         }
+        else{
         alert("чтобы поставить лайк, авторизуйтесь")
+      }
       }
     } catch (error: any) {
       const er = JSON.parse(error.message);
