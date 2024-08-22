@@ -6,6 +6,7 @@ import classNames from "classnames";
 
 import { TrackType } from "../../lib/type";
 import Tracks from "../Tracks/Tracks";
+import Loading from "../Loading/Loading/Loading";
 
 type CenterBlockProps = {
   allTracks: TrackType[];
@@ -34,8 +35,8 @@ const CenterBlock = ({ allTracks, error, isLoading }: CenterBlockProps) => {
           </div>
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
-        {/* {isLoading && "Ничего не найдено"} */}
-        {/* {isLoading && ( */}
+        {!isLoading && <Loading />}
+        {isLoading && allTracks.length === 0 && "ничего не найдено"}
         <div className={styles.playList}>
           {allTracks.map((value) => (
             <Tracks key={value.id} track={value} />

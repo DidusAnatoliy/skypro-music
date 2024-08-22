@@ -13,6 +13,7 @@ type Props = {
   track: TrackType;
 };
 const Tracks = ({ track }: Props) => {
+  useInitializeLikedTracks()
   const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
   const dispatch = useAppDispatch();
   const allTracks = useAppSelector((state) => state.playlist.filteredPlaylist);

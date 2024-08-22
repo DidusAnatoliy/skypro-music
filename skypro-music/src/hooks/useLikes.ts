@@ -8,7 +8,7 @@ import {
   likesFavoriteTracks,
 } from "../Api/favoriteTracks";
 
-export const useLikeTrack = (track: TrackType) => {
+export const useLikeTrack = (track: TrackType | null) => {
 
   const likedTracks = useAppSelector((state) => state.playlist.likedTracks);
 
@@ -16,7 +16,7 @@ export const useLikeTrack = (track: TrackType) => {
 
   const tokens = useAppSelector((state) => state.user.tokens.access);
 
-  const isLiked = likedTracks.some((tracks) => track.id === tracks.id);
+  const isLiked = likedTracks.some((tracks) => track?.id === tracks.id);
 
   const handleLike = async (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -25,13 +25,13 @@ export const useLikeTrack = (track: TrackType) => {
     if (!tokens) alert("чтобы поставить лайк, авторизуйтесь");
     try {
       if (isLiked) {
-        if (tokens) {
+        if (tokens && track) {
           await deleteFavoriteTracks(tokens, track.id);
 
           dispatch(setDislikeTrack(track.id));
         }
       } else {
-        if (tokens) {
+        if (tokens && track) {
           await likesFavoriteTracks(tokens, track.id);
           dispatch(setLikeTrack(track));
         }

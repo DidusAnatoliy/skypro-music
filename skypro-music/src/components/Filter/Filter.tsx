@@ -31,6 +31,7 @@ const Filter = ({ allTracks, title, list, onClick, value, isOpen }: Props) => {
       return Array.from(array);
     }
     return order;
+    filterList();
   };
   const toggleFilter = (item: string) => {
     if (list === order) {
@@ -48,11 +49,18 @@ const Filter = ({ allTracks, title, list, onClick, value, isOpen }: Props) => {
           : [...list, item],
       })
     );
+    if (list === order) {
+      dispatch(
+        setFilters({
+          [value]: orderList === item ? "По умолчанию" : item,
+        })
+      );
+    }
   };
   useEffect(() => {
     if (value !== "order") setFilterNumber(list.length);
   }, [list, value]);
-  filterList();
+  
   return (
     <div>
       <div className={styles.listDiv}>
@@ -71,10 +79,10 @@ const Filter = ({ allTracks, title, list, onClick, value, isOpen }: Props) => {
       {isOpen && (
         <div className={styles.list}>
           <ul className={styles.listItem}>
-          {filterList().map((item, index) => {
+          {filterList().map((item) => {
               return (
                 <li
-                  key={index}
+                  key={item}
                   onClick={() => toggleFilter(item)}
                   className={classNames(styles.listText, {
                     [styles.listTextActive]:

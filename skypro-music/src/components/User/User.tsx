@@ -24,21 +24,7 @@ export default function User() {
     if (!userName) {
         return null;
     }
-    console.log("токены из локал:", getDataFromLS("tokens"));
-
-  console.log("токены из редакс:", refresh);
-
-  async function token() {
-    try {
-      if (refresh) {
-        await Promise.all([dispatch(refreshToken(refresh)).unwrap()]);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  setInterval(() => token(), 180000);
+   
     const handleLogout = () => {
         dispatch(logout());
         router.push("/");

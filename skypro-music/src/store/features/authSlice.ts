@@ -69,7 +69,7 @@ import {
     },
   };
 
-  console.log("initialState в редакс:", initialState);
+  // console.log("initialState в редакс:", initialState);
 
   const authSlice = createSlice({
     name: "auth",
