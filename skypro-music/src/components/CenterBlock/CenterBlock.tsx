@@ -3,18 +3,18 @@
 
 import styles from "./CenterBlock.module.css";
 import classNames from "classnames";
-
-import { TrackType } from "../../lib/type";
 import Tracks from "../Tracks/Tracks";
 import Loading from "../Loading/Loading/Loading";
+import { useAppSelector } from "@/hooks/store";
+import { TrackType } from "@/lib/type";
 
 type CenterBlockProps = {
   allTracks: TrackType[];
-  error: string | null;
-  isLoading: boolean;
 };
-const CenterBlock = ({ allTracks, error, isLoading }: CenterBlockProps) => {
- 
+const CenterBlock = ({ allTracks }: CenterBlockProps) => {
+  const error = useAppSelector((state) => state.playlist.error);
+  const isLoading = useAppSelector((state) => state.playlist.isLoading);
+
   return (
     <div className={styles.mainCenterblock}>
       <div className={styles.centerblockContent}>

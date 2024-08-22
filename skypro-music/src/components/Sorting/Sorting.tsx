@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import styles from "./Sorting.module.css";
 import Filter from "@components/Filter/Filter";
 import { FilterData, order } from "@components/Filter/FilterData";
-import { TrackType } from "../../lib/type";
+
 import { useAppSelector } from "../../hooks/store";
 
 
-const Sorting = ({ allTracks }: { allTracks: TrackType[] }) => {
+const Sorting = () => {
   const [filterValue, setFilterValue] = useState<string | null>(null);
 
   const authorList = useAppSelector(
@@ -45,7 +45,7 @@ const Sorting = ({ allTracks }: { allTracks: TrackType[] }) => {
               onClick={handleFilterValue}
               value={item.value}
               isOpen={filterValue === item.value}
-              allTracks={allTracks}
+            
             />
           );
         })}

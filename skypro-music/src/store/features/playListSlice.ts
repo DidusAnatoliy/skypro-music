@@ -25,6 +25,8 @@ export type PlayListStateType = {
   filteredPlaylist: TrackType[]; //Массив отфильтрованных треков.
   initialPlaylist: TrackType[]; //Массив исходных треков, до применения фильтрации.
   likedTracks: TrackType[];
+  isLoading: boolean;
+  error: string | null;
 };
 const initialState: PlayListStateType = {
   currentPlaylist: [],
@@ -42,6 +44,8 @@ const initialState: PlayListStateType = {
   filteredPlaylist: [],
   initialPlaylist: [],
   likedTracks: [],
+  isLoading: false,
+  error: null,
 };
 const playListSlice = createSlice({
   name: "playlist",
@@ -178,6 +182,12 @@ const playListSlice = createSlice({
         (el) => el.id !== action.payload.id
       );
     },
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -200,6 +210,8 @@ export const {
   resetFilters,
   setLikeTrack,
   setDislikeTrack,
+  setIsLoading,
+  setError,
 } = playListSlice.actions;
 
 export const playlistReducer = playListSlice.reducer;
