@@ -12,19 +12,6 @@
     background-color: rgba(0, 0, 0, 0.85);
   }
   
-  /* .modal__btn-enter:hover {
-    background-color: #3f007d;
-  }
-  .modal__btn-signup:hover {
-    background-color: #f4f5f6;
-  }
-  .modal__btn-enter:active {
-    background-color: #271a58;
-  }
-  .modal__btn-signup:active {
-    background-color: #d9d9d9;
-  } */
-  
   .modalBlock {
     position: absolute;
     z-index: 2;
@@ -51,10 +38,6 @@
     padding: 43px 47px 47px 40px;
   }
   
-  /* .modal__form-login input:first-child {
-    margin-bottom: 30px;
-  } */
-  
   .modalLogo {
     width: 140px;
     height: 21px;
@@ -74,6 +57,7 @@
     border-right: none;
     border-bottom: 1px solid #d0cece;
     padding: 8px 1px;
+    margin-bottom: 10px;
   }
   
   .modalInput::-webkit-input-placeholder {
@@ -117,8 +101,7 @@
     height: 52px;
     background-color: #580ea2;
     border-radius: 6px;
-    margin-top: 60px;
-    margin-bottom: 20px;
+    margin-top: 50px;
     border: none;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -129,6 +112,8 @@
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
+    font-size: 18px;
+    color: #ffffff;
   }
   
   .modalBtnEnter:hover {
