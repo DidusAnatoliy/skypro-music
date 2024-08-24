@@ -175,6 +175,13 @@
     fill: transparent;
     stroke: #696969;
   }
+
+  .activeLike {
+    fill: #AD61FF;
+    width: 14px;
+    height: 12px;
+    margin-right: 17px;
+  }
   
   .trackTimeText {
     font-style: normal;
