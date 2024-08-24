@@ -146,7 +146,7 @@ const Bar = () => {
                   ></use>
                 </svg>
               </div>
-              <div onClick={handleNext} className={styles.playerBtnNext}>
+              <div data-testid='nextTrack' onClick={handleNext} className={styles.playerBtnNext}>
                 <svg className={styles.playerBtnNextSvg}>
                   <use xlinkHref="/icon/sprite.svg#icon-next"></use>
                 </svg>
@@ -242,6 +242,7 @@ const Bar = () => {
                   onTimeUpdate={(e) =>
                     setCurrentTime(e.currentTarget.currentTime)
                   }
+                  data-testid="audio-element"
                 ></audio>
                 <input
                   className={classNames(styles.volumeProgressLine, styles._btn)}

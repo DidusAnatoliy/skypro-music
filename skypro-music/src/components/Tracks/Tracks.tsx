@@ -29,7 +29,7 @@ const Tracks = ({ track }: Props) => {
   const { isLiked, handleLike } = useLikeTrack(track);
 
   return (
-    <div onClick={handleClick} className={styles.contentPlaylist}>
+    <div data-testid ="toggletrack" onClick={handleClick} className={styles.contentPlaylist}>
       <div className={styles.playlistItem}>
         <div className={styles.playlistTrack}>
           <div className={styles.trackTitle}>
