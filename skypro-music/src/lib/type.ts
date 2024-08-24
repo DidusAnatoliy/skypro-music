@@ -18,3 +18,22 @@ export type StaredUser = {
     track_file: string;
     stared_user: StaredUser[];
   };
+
+  export type SigninFormType = {
+    email: string;
+    password: string;
+  };
+
+  export type SignupFormType = {
+    email: string;
+    password: string;
+    username: string;
+  };
+
+  export type AuthStateType = {
+    user: null | StaredUser;
+    tokens: {
+      access: string | null;
+      refresh: string | null;
+    };
+  };

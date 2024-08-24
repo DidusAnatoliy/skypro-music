@@ -2,20 +2,30 @@
 import React, { useState } from "react";
 import styles from "./Sorting.module.css";
 import Filter from "@components/Filter/Filter";
+import { FilterData, order } from "@components/Filter/FilterData";
 
+import { useAppSelector } from "../../hooks/store";
+type props = {title:string}
 
-type PropsFilter = {
-  title: string;
-  list: string[];
-  value: string;
-};
-
-type Props = {
-  FilterData: Array<PropsFilter>;
-};
-
-const Sorting = ({ FilterData }: Props) => {
+const Sorting = ({title}:props) => {
   const [filterValue, setFilterValue] = useState<string | null>(null);
+
+  const authorList = useAppSelector(
+    (state) => state.playlist.filterOptions.author
+  );
+  const genreList = useAppSelector(
+    (state) => state.playlist.filterOptions.genre
+  );
+
+  const filterList = (value: string) => {
+    if (value === FilterData[0].title) {
+      return authorList;
+    } else if (value === FilterData[1].title) {
+      return genreList;
+    } else {
+      return order;
+    }
+  };
 
   const handleFilterValue = (value: string) => {
     setFilterValue((prev) => (prev === value ? null : value));
@@ -23,7 +33,7 @@ const Sorting = ({ FilterData }: Props) => {
   
   return (
     <div>
-      <h2 className={styles.centerblockH2}>Треки</h2>
+      <h2 className={styles.centerblockH2}>{title}</h2>
       <div className={styles.centerblockFilter}>
         <div className={styles.filterTitle}>Искать по:</div>
         {FilterData.map((item, index) => {
@@ -31,10 +41,11 @@ const Sorting = ({ FilterData }: Props) => {
             <Filter
               key={index}
               title={item.title}
-              list={item.list}
+              list={filterList(item.title)}
               onClick={handleFilterValue}
               value={item.value}
               isOpen={filterValue === item.value}
+            
             />
           );
         })}

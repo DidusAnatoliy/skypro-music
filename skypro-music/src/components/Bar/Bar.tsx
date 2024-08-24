@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState} from "react";
 import styles from "./Bar.module.css";
 import classNames from "classnames";
 import PlayerProgress from "../PlayerProgress/PlayerProgress";
@@ -13,12 +13,15 @@ import {
   setLoop,
 } from "../../store/features/playListSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/store";
+import { useInitializeLikedTracks } from "@/hooks/likes";
+import { useLikeTrack } from "@/hooks/useLikes";
 
-  const Bar = () => {
+const Bar = () => {
+  useInitializeLikedTracks()
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [volume, setVolume] = useState(0.5);
 
-  
+
   const toggleLoop = () => {
     const audio = audioRef.current;
     if (audio) {
@@ -36,6 +39,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/store";
 
   const isPlaying = useAppSelector((state) => state.playlist.isPlaying);
   const currentTrack = useAppSelector((state) => state.playlist.currentTrack);
+  const { isLiked, handleLike } = useLikeTrack(currentTrack);
   const dispatch = useAppDispatch();
 
   // Функция для воспроизведения и паузы
@@ -126,9 +130,9 @@ import { useAppDispatch, useAppSelector } from "../../hooks/store";
         <div className={styles.barPlayerBlock}>
           <div className={styles.barPlayer}>
             <div className={styles.playerControls}>
-            <div onClick={handlePrev} className={styles.playerBtnPrev}>
+              <div onClick={handlePrev} className={styles.playerBtnPrev}>
                 <svg className={styles.playerBtnPrevSvg}>
-                <use xlinkHref="icon/sprite.svg#icon-prev"></use>
+                  <use xlinkHref="/icon/sprite.svg#icon-prev"></use>
                 </svg>
               </div>
               <div
@@ -137,14 +141,14 @@ import { useAppDispatch, useAppSelector } from "../../hooks/store";
               >
                 <svg className={styles.playerBtnPlaySvg}>
                   <use
-                    xlinkHref={`icon/sprite.svg#${isPlaying ? "icon-pause" : "icon-play"
+                    xlinkHref={`/icon/sprite.svg#${isPlaying ? "icon-pause" : "icon-play"
                       }`}
                   ></use>
                 </svg>
               </div>
               <div onClick={handleNext} className={styles.playerBtnNext}>
                 <svg className={styles.playerBtnNextSvg}>
-                <use xlinkHref="icon/sprite.svg#icon-next"></use>
+                  <use xlinkHref="/icon/sprite.svg#icon-next"></use>
                 </svg>
               </div>
               <div
@@ -156,7 +160,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/store";
                 )}
               >
                 <svg className={styles.playerBtnRepeatSvg}>
-                <use xlinkHref="icon/sprite.svg#icon-repeat"></use>
+                  <use xlinkHref="/icon/sprite.svg#icon-repeat"></use>
                 </svg>
               </div>
               <div
@@ -168,7 +172,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/store";
                 )}
               >
                 <svg className={styles.playerBtnShuffleSvg}>
-                  <use xlinkHref="icon/sprite.svg#icon-shuffle"></use>
+                  <use xlinkHref="/icon/sprite.svg#icon-shuffle"></use>
                 </svg>
               </div>
             </div>
@@ -176,7 +180,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/store";
               <div className={styles.trackPlayContain}>
                 <div className={styles.trackPlayImage}>
                   <svg className={styles.trackPlaySvg}>
-                    <use xlinkHref="icon/sprite.svg#icon-note"></use>
+                    <use xlinkHref="/icon/sprite.svg#icon-note"></use>
                   </svg>
                 </div>
                 <div className={styles.trackPlayAuthor}>
@@ -191,29 +195,36 @@ import { useAppDispatch, useAppSelector } from "../../hooks/store";
                 </div>
               </div>
               <div className={styles.trackPlayLikeDis}>
-                <div
-                  className={classNames(styles.trackPlayLike, styles.btnIcon)}
-                >
-                  <svg className={styles.trackPlayLikeSvg}>
-                    <use
-                      onClick={handleTreck}
-                      xlinkHref="icon/sprite.svg#icon-like"
-                    ></use>
-                  </svg>
-                </div>
-                <div
-                  className={classNames(
-                    styles.trackPlayDislike,
-                    styles.btnIcon
-                  )}
-                >
-                  <svg className={styles.trackPlayDislikeSvg}>
-                    <use
-                      onClick={handleTreck}
-                      xlinkHref="icon/sprite.svg#icon-dislike"
-                    ></use>
-                  </svg>
-                </div>
+              {isLiked ? (
+                  <div
+                    onClick={handleLike}
+                    className={classNames(
+                      styles.trackPlayDislike,
+                      styles.btnIcon
+                    )}
+                  >
+                    <svg
+                      className={classNames(styles.trackPlayDislikeSvg, {
+                        [styles.activeLike]: isLiked,
+                      })}
+                    >
+                      <use xlinkHref="/icon/sprite.svg#icon-dislike"></use>
+                    </svg>
+                  </div>
+                ) : (
+                  <div
+                    onClick={handleLike}
+                    className={classNames(styles.trackPlayLike, styles.btnIcon)}
+                  >
+                    <svg
+                      className={classNames(styles.trackPlayLikeSvg, {
+                        [styles.activeLike]: isLiked,
+                      })}
+                    >
+                      <use xlinkHref="/icon/sprite.svg#icon-like"></use>
+                    </svg>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -221,7 +232,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/store";
             <div className={styles.volumeContent}>
               <div className={styles.volumeImage}>
                 <svg className={styles.volumeSvg}>
-                  <use xlinkHref="icon/sprite.svg#icon-volume"></use>
+                  <use xlinkHref="/icon/sprite.svg#icon-volume"></use>
                 </svg>
               </div>
               <div className={classNames(styles.volumeProgress, styles._btn)}>
